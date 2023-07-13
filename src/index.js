@@ -3,31 +3,43 @@ import { Circle, Layer, Line, Rect, Stage, Text } from "react-konva";
 import './styles.css';
 
 // 開発用に使うデモの値
-const VALUE_DEMO = [[0,0],[0.3,80],[0.5,23],[0.55,7],[1,50]]
+const VALUE_DEMO = [[0,0],[0.2,80],[0.6,23],[0.65,7],[0.90,50]]
 
 const SimpleChart = () => {
     let biggistValIndex = 0;
-    for (let index = 0; index < VALUE_DEMO.length; index++) {
-        if (VALUE_DEMO[biggistValIndex][1] < VALUE_DEMO[index][1]) biggistValIndex = index
+    let biggistMemoryIndex = 0;
+    for (let o = 0; o < VALUE_DEMO.length; o++) {
+        if (VALUE_DEMO[biggistValIndex][1] < VALUE_DEMO[o][1]) biggistValIndex = o
+    }
+    for (let o = 0; o < VALUE_DEMO.length; o++) {
+        console.log(`${VALUE_DEMO[biggistMemoryIndex][0]} < ${VALUE_DEMO[o][0]}`)
+        if (VALUE_DEMO[biggistMemoryIndex][0] < VALUE_DEMO[o][0]) biggistMemoryIndex = o
     }
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
     let renderLineArr = []
     let renderPointArr = []
 
-    for (let index = 0; index < VALUE_DEMO.length; index++) {
-        renderLineArr[index*2] = VALUE_DEMO[index][0]*710+80
-        renderLineArr[index*2+1] = 390 - VALUE_DEMO[index][1] / VALUE_DEMO[biggistValIndex][1] *390 + 10
-        renderPointArr.push([VALUE_DEMO[index][0]*710+10+70, 390 - VALUE_DEMO[index][1] / VALUE_DEMO[biggistValIndex][1] *390 + 10])
+    for (let l = 0; l < VALUE_DEMO.length; l++) {
+        renderLineArr[l*2] = VALUE_DEMO[l][0]*790+80
+        renderLineArr[l*2+1] = 390 - VALUE_DEMO[l][1] / VALUE_DEMO[biggistValIndex][1] *390 + 10
+        renderPointArr.push([VALUE_DEMO[l][0]*790+10+70, 390 - VALUE_DEMO[l][1] / VALUE_DEMO[biggistValIndex][1] *390 + 10])
     }
 
-    const returnMemoryText = (index) => {
-        if(index == 0) {
+    const returnMemoryText = (Mindex) => {
+        if(Mindex == 0) {
+            return 0
+        } else {
+            return VALUE_DEMO[biggistValIndex][1]/10*Mindex
+        }
+    }
+
+    const returnVerticalMemoryText = (Vindex) => {
+        if(Vindex == 0) {
             console.log('000')
             return 0
         } else {
-            console.log(`${VALUE_DEMO[biggistValIndex][1]}/${index} = ${VALUE_DEMO[biggistValIndex][1]/index}`)
-            return VALUE_DEMO[biggistValIndex][1]/10*index
+            return  Math.floor( ( VALUE_DEMO[biggistMemoryIndex][0]/10*Vindex ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )
         }
     }
 
@@ -53,7 +65,7 @@ const SimpleChart = () => {
                     {(() => {
                         const memoryLines = []
                         for (let index = 0; index < 11; index++) {
-                            memoryLines.push(<Text x={71*index+80 -6 } y={420} fontSize={12} text={returnMemoryText(index)} />)
+                            memoryLines.push(<Text x={71*index+80 -6 } y={420} fontSize={12} text={returnVerticalMemoryText(index)} />)
                         }
                         return memoryLines
                     })()}
