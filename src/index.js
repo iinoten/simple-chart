@@ -33,7 +33,7 @@ const SimpleChart = () => {
 
     return(
         <>
-            <Stage width={800} height={450}>
+            <Stage width={900} height={450}>
                 <Layer>
                   <Rect stroke='black' strokeWidth={0.1} width={800} height={450} />
                     {(() => {
@@ -47,6 +47,13 @@ const SimpleChart = () => {
                         const memoryLines = []
                         for (let index = 0; index < 11; index++) {
                             memoryLines.push(<Text x={0} y={400-40*index} text={returnMemoryText(index)} />)
+                        }
+                        return memoryLines
+                    })()}
+                    {(() => {
+                        const memoryLines = []
+                        for (let index = 0; index < 11; index++) {
+                            memoryLines.push(<Text x={71*index+80 -6 } y={420} fontSize={12} text={returnMemoryText(index)} />)
                         }
                         return memoryLines
                     })()}
