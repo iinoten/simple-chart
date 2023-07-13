@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layer, Line, Rect, Stage } from "react-konva";
+import { Circle, Layer, Line, Rect, Stage } from "react-konva";
 import './styles.css';
 
 // 開発用に使うデモの値
@@ -13,10 +13,12 @@ const SimpleChart = () => {
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
     let renderLineArr = []
+    let renderPointArr = []
 
     for (let index = 0; index < VALUE_DEMO.length; index++) {
         renderLineArr[index*2] = VALUE_DEMO[index][0]*780+10
         renderLineArr[index*2+1] = 390 - VALUE_DEMO[index][1]*390 + 10
+        renderPointArr.push([VALUE_DEMO[index][0]*780+10,390-VALUE_DEMO[index][1]*390 + 10])
     }
 
     return(
@@ -26,6 +28,11 @@ const SimpleChart = () => {
                   <Rect stroke='black' strokeWidth={0.1} width={800} height={450} />
                   <Line points={[10,10, 10,400, 790,400]}stroke='#696969' strokeWidth={3} />
                   <Line points={renderLineArr}stroke='#696969' strokeWidth={3} />
+                    {renderPointArr.map((item) => {
+                        return (
+                            <Circle fill='white' x={item[0]} y={item[1]} radius={6} stroke='#696969' strokeWidth={3} />   
+                        );
+                    })}
                 </Layer>
             </Stage>
         </>
