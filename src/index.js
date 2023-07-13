@@ -3,17 +3,17 @@ import { Circle, Layer, Line, Rect, Stage, Text } from "react-konva";
 import './styles.css';
 
 // 開発用に使うデモの値
-const VALUE_DEMO = [[0,0],[0.2,80],[0.6,23],[0.65,7],[0.90,50]]
+const VALUE_DEMO = [[0,0],[10,80],[60,23],[65,7],[120,50]]
 
 const SimpleChart = () => {
     let biggistValIndex = 0;
     let biggistMemoryIndex = 0;
     for (let o = 0; o < VALUE_DEMO.length; o++) {
+        if (VALUE_DEMO[biggistMemoryIndex][0] < VALUE_DEMO[o][0]) biggistMemoryIndex = o
         if (VALUE_DEMO[biggistValIndex][1] < VALUE_DEMO[o][1]) biggistValIndex = o
     }
     for (let o = 0; o < VALUE_DEMO.length; o++) {
         console.log(`${VALUE_DEMO[biggistMemoryIndex][0]} < ${VALUE_DEMO[o][0]}`)
-        if (VALUE_DEMO[biggistMemoryIndex][0] < VALUE_DEMO[o][0]) biggistMemoryIndex = o
     }
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
@@ -21,9 +21,9 @@ const SimpleChart = () => {
     let renderPointArr = []
 
     for (let l = 0; l < VALUE_DEMO.length; l++) {
-        renderLineArr[l*2] = VALUE_DEMO[l][0]*790+80
+        renderLineArr[l*2] = VALUE_DEMO[l][0] / VALUE_DEMO[biggistMemoryIndex][0] *710+80
         renderLineArr[l*2+1] = 390 - VALUE_DEMO[l][1] / VALUE_DEMO[biggistValIndex][1] *390 + 10
-        renderPointArr.push([VALUE_DEMO[l][0]*790+10+70, 390 - VALUE_DEMO[l][1] / VALUE_DEMO[biggistValIndex][1] *390 + 10])
+        renderPointArr.push([VALUE_DEMO[l][0] / VALUE_DEMO[biggistMemoryIndex][0] *710+80, 390 - VALUE_DEMO[l][1] / VALUE_DEMO[biggistValIndex][1] *390 + 10])
     }
 
     const returnMemoryText = (Mindex) => {
