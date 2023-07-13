@@ -47,7 +47,7 @@ const SimpleChart = () => {
         <>
             <Stage width={900} height={450}>
                 <Layer>
-                  <Rect stroke='black' strokeWidth={0.1} width={800} height={450} />
+                  <Rect stroke='black' strokeWidth={0.1} width={850} height={450} />
                     {(() => {
                         const memoryLines = []
                         for (let index = 0; index < 10; index++) {
@@ -58,7 +58,7 @@ const SimpleChart = () => {
                     {(() => {
                         const memoryLines = []
                         for (let index = 0; index < 11; index++) {
-                            memoryLines.push(<Text x={0} y={400-40*index} text={returnMemoryText(index)} />)
+                            memoryLines.push(<Text x={50} y={400-40*index} text={returnMemoryText(index)} />)
                         }
                         return memoryLines
                     })()}
