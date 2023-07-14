@@ -14,19 +14,20 @@ interface LineChartProps {
 const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     children?: ReactNode
 }) => {
-    let childLineData: DataEntry[] = []
-    if (React.isValidElement(children) && children.type === SimpleChartLine) {
-        childLineData = children?.props.dataEntry as DataEntry[]
-    }
-    let biggistValIndex = 0;
-    let biggistMemoryIndex = 0;
+    const childLineData: DataEntry[] = (()=>{
+        if (React.isValidElement(children) && children.type === SimpleChartLine) {
+            return children?.props.dataEntry as DataEntry[]
+        } else {
+            return []
+        }
+    })()
+    let biggistValIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.y > array[maxIndex].y ? currentIndex : maxIndex, 0)
+    let biggistMemoryIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
     let renderLineArr: number[] = []
     let renderPointArr: number[][] = []
     for (let index = 0; index < childLineData.length; index++) {
-        if (childLineData[biggistMemoryIndex].x < childLineData[index].x) biggistMemoryIndex = index
-        if (childLineData[biggistValIndex].y < childLineData[index].y) biggistValIndex = index
 
         renderLineArr[index*2] = childLineData[index].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80
         renderLineArr[index*2+1] = 390 - childLineData[index].y / childLineData[biggistValIndex].y *390 + 10
