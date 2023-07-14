@@ -1,31 +1,26 @@
 import React from 'react';
 import { Circle, Layer, Line, Rect, Stage, Text } from "react-konva";
+import { DataEntry } from './constant';
 import './styles.css';
 
 // 開発用に使うデモの値
-const VALUE_DEMO: DataEntry[] = [{x:0,y:0},{x:10,y:80},{x:60,y:23},{x:65,y:7},{x:120,y:50}]
-
-interface DataEntry {
-    x: number
-    y: number
-}
+const VALUE_DEMO: DataEntry[] = [{x:0,y:0},{x:0.3,y:80},{x:0.5,y:23},{x:0.7,y:7},{x:2,y:50}]
 
 const SimpleChart = () => {
     let biggistValIndex = 0;
     let biggistMemoryIndex = 0;
-    for (let o = 0; o < VALUE_DEMO.length; o++) {
-        if (VALUE_DEMO[biggistMemoryIndex].x < VALUE_DEMO[o].x) biggistMemoryIndex = o
-        if (VALUE_DEMO[biggistValIndex].y < VALUE_DEMO[o].y) biggistValIndex = o
-    }
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
     let renderLineArr: number[] = []
     let renderPointArr: number[][] = []
-
+    for (let o = 0; o < VALUE_DEMO.length; o++) {
+        if (VALUE_DEMO[biggistMemoryIndex].x < VALUE_DEMO[o].x) biggistMemoryIndex = o
+        if (VALUE_DEMO[biggistValIndex].y < VALUE_DEMO[o].y) biggistValIndex = o
+    }
     for (let l = 0; l < VALUE_DEMO.length; l++) {
-        renderLineArr[l*2] = VALUE_DEMO[l].x / VALUE_DEMO[biggistMemoryIndex].x *710+80
+        renderLineArr[l*2] = VALUE_DEMO[l].x as number / (VALUE_DEMO[biggistMemoryIndex].x as number) *710+80
         renderLineArr[l*2+1] = 390 - VALUE_DEMO[l].y / VALUE_DEMO[biggistValIndex].y *390 + 10
-        renderPointArr.push([VALUE_DEMO[l].x / VALUE_DEMO[biggistMemoryIndex].x *710+80, 390 - VALUE_DEMO[l].y / VALUE_DEMO[biggistValIndex].y*390 + 10])
+        renderPointArr.push([VALUE_DEMO[l].x as number / (VALUE_DEMO[biggistMemoryIndex].x as number) *710+80, 390 - VALUE_DEMO[l].y / VALUE_DEMO[biggistValIndex].y*390 + 10])
     }
 
     const returnMemoryText = (index: number): string => {
@@ -40,7 +35,7 @@ const SimpleChart = () => {
         if(index == 0) {
             return '0'
         } else {
-            return  (Math.floor( ( VALUE_DEMO[biggistMemoryIndex].x/10*index ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
+            return  (Math.floor( ( VALUE_DEMO[biggistMemoryIndex].x as number /10*index ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
         }
     }
 
