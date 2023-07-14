@@ -21,8 +21,8 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
             return []
         }
     })()
-    let biggistValIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.y > array[maxIndex].y ? currentIndex : maxIndex, 0)
-    let biggistMemoryIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
+    const biggistValIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.y > array[maxIndex].y ? currentIndex : maxIndex, 0)
+    const biggistMemoryIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
     let renderLineArr: number[] = []
