@@ -24,14 +24,13 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     // 780 全体横   390 全体縦
     let renderLineArr: number[] = []
     let renderPointArr: number[][] = []
-    for (let o = 0; o < childLineData.length; o++) {
-        if (childLineData[biggistMemoryIndex].x < childLineData[o].x) biggistMemoryIndex = o
-        if (childLineData[biggistValIndex].y < childLineData[o].y) biggistValIndex = o
-    }
-    for (let l = 0; l < childLineData.length; l++) {
-        renderLineArr[l*2] = childLineData[l].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80
-        renderLineArr[l*2+1] = 390 - childLineData[l].y / childLineData[biggistValIndex].y *390 + 10
-        renderPointArr.push([childLineData[l].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80, 390 - childLineData[l].y / childLineData[biggistValIndex].y*390 + 10])
+    for (let index = 0; index < childLineData.length; index++) {
+        if (childLineData[biggistMemoryIndex].x < childLineData[index].x) biggistMemoryIndex = index
+        if (childLineData[biggistValIndex].y < childLineData[index].y) biggistValIndex = index
+
+        renderLineArr[index*2] = childLineData[index].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80
+        renderLineArr[index*2+1] = 390 - childLineData[index].y / childLineData[biggistValIndex].y *390 + 10
+        renderPointArr.push([childLineData[index].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80, 390 - childLineData[index].y / childLineData[biggistValIndex].y*390 + 10])
     }
 
     const returnMemoryText = (index: number): string => {
