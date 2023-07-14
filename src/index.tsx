@@ -1,40 +1,44 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { Circle, Layer, Line, Rect, Stage, Text } from "react-konva";
-import { DataEntry } from './constant';
+import { DataEntry, SimpleChartLineChildProps } from './constant';
 import './styles.css';
-import {SimpleChartLine, ChildProps} from './SimpleChartLine';
+import {SimpleChartLine} from './SimpleChartLine';
 
 // 開発用に使うデモの値
-const VALUE_DEMO: DataEntry[] = [{x:0,y:0},{x:0.3,y:80},{x:0.5,y:23},{x:0.7,y:7},{x:2,y:50}]
+const childLineData: DataEntry[] = [{x:0,y:0},{x:0.3,y:80},{x:0.5,y:23},{x:0.7,y:7},{x:2,y:50}]
 
 interface LineChartProps {
-    children: React.ReactElement<ChildProps> | React.ReactElement<ChildProps>[];
+    children: React.ReactElement<SimpleChartLineChildProps> | React.ReactElement<SimpleChartLineChildProps>[];
 }
 
 const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     children?: ReactNode
 }) => {
+    let childLineData: DataEntry[] = []
+    if (React.isValidElement(children) && children.type === SimpleChartLine) {
+        childLineData = children?.props.dataEntry as DataEntry[]
+    }
     let biggistValIndex = 0;
     let biggistMemoryIndex = 0;
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
     let renderLineArr: number[] = []
     let renderPointArr: number[][] = []
-    for (let o = 0; o < VALUE_DEMO.length; o++) {
-        if (VALUE_DEMO[biggistMemoryIndex].x < VALUE_DEMO[o].x) biggistMemoryIndex = o
-        if (VALUE_DEMO[biggistValIndex].y < VALUE_DEMO[o].y) biggistValIndex = o
+    for (let o = 0; o < childLineData.length; o++) {
+        if (childLineData[biggistMemoryIndex].x < childLineData[o].x) biggistMemoryIndex = o
+        if (childLineData[biggistValIndex].y < childLineData[o].y) biggistValIndex = o
     }
-    for (let l = 0; l < VALUE_DEMO.length; l++) {
-        renderLineArr[l*2] = VALUE_DEMO[l].x as number / (VALUE_DEMO[biggistMemoryIndex].x as number) *710+80
-        renderLineArr[l*2+1] = 390 - VALUE_DEMO[l].y / VALUE_DEMO[biggistValIndex].y *390 + 10
-        renderPointArr.push([VALUE_DEMO[l].x as number / (VALUE_DEMO[biggistMemoryIndex].x as number) *710+80, 390 - VALUE_DEMO[l].y / VALUE_DEMO[biggistValIndex].y*390 + 10])
+    for (let l = 0; l < childLineData.length; l++) {
+        renderLineArr[l*2] = childLineData[l].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80
+        renderLineArr[l*2+1] = 390 - childLineData[l].y / childLineData[biggistValIndex].y *390 + 10
+        renderPointArr.push([childLineData[l].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80, 390 - childLineData[l].y / childLineData[biggistValIndex].y*390 + 10])
     }
 
     const returnMemoryText = (index: number): string => {
         if(index == 0) {
             return '0'
         } else {
-            return (VALUE_DEMO[biggistValIndex].y/10*index).toString()
+            return (childLineData[biggistValIndex].y/10*index).toString()
         }
     }
 
@@ -42,9 +46,10 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         if(index == 0) {
             return '0'
         } else {
-            return  (Math.floor( ( VALUE_DEMO[biggistMemoryIndex].x as number /10*index ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
+            return  (Math.floor( ( childLineData[biggistMemoryIndex].x as number /10*index ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
         }
     }
+    console.log(`## ${childLineData.map((item=>`${item.x}/${item.y}`))}`)
 
     return(
         <>
