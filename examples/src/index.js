@@ -1,6 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom'
-import MyComponent from '../../src'
+import SimpleChart from '../../src';
 
-const App = () => <MyComponent/>;
+const App = () => <>
+<SimpleChart />
+</>
 render(<App />, document.getElementById('root'));
