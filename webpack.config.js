@@ -17,6 +17,12 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                // 拡張子 .ts の場合
+                test: /\.(ts|tsx)/,
+                // TypeScript をコンパイルする
+                use: 'ts-loader',
+            },
+            {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"]
             }
@@ -24,7 +30,7 @@ module.exports = {
     },
     plugins: [htmlWebpackPlugin],
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
     // 開発用Webサーバのポートを指定します。
     devServer: {
