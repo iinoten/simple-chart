@@ -25,12 +25,11 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     const biggistMemoryIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
-    let renderLineArr: number[] = []
+    const renderLineArr: number[] =  childLineData.flatMap(obj => [(obj.x/(childLineData[biggistMemoryIndex].x as number) *710+80), (390 - obj.y/ childLineData[biggistValIndex].y *390 + 10)]);
+    
     let renderPointArr: number[][] = []
     for (let index = 0; index < childLineData.length; index++) {
 
-        renderLineArr[index*2] = childLineData[index].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80
-        renderLineArr[index*2+1] = 390 - childLineData[index].y / childLineData[biggistValIndex].y *390 + 10
         renderPointArr.push([childLineData[index].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80, 390 - childLineData[index].y / childLineData[biggistValIndex].y*390 + 10])
     }
 
