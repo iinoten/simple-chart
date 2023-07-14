@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Circle, Layer, Line, Rect, Stage, Text } from "react-konva";
 import { DataEntry } from './constant';
 import './styles.css';
+import {SimpleChartLine, ChildProps} from './SimpleChartLine';
 
 // 開発用に使うデモの値
 const VALUE_DEMO: DataEntry[] = [{x:0,y:0},{x:0.3,y:80},{x:0.5,y:23},{x:0.7,y:7},{x:2,y:50}]
 
-const SimpleChart = () => {
+interface LineChartProps {
+    children: React.ReactElement<ChildProps> | React.ReactElement<ChildProps>[];
+}
+
+const SimpleChart: React.FC<LineChartProps> = ({ children }: {
+    children?: ReactNode
+}) => {
     let biggistValIndex = 0;
     let biggistMemoryIndex = 0;
     // 10,400 始まり   790,10 終わり
@@ -73,6 +80,7 @@ const SimpleChart = () => {
                     })}
                 </Layer>
             </Stage>
+            {children}
         </>
     )
 };
