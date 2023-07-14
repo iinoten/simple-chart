@@ -28,19 +28,19 @@ const SimpleChart = () => {
         renderPointArr.push([VALUE_DEMO[l].x / VALUE_DEMO[biggistMemoryIndex].x *710+80, 390 - VALUE_DEMO[l].y / VALUE_DEMO[biggistValIndex].y*390 + 10])
     }
 
-    const returnMemoryText = (Mindex: number): string => {
-        if(Mindex == 0) {
+    const returnMemoryText = (index: number): string => {
+        if(index == 0) {
             return '0'
         } else {
-            return (VALUE_DEMO[biggistValIndex].y/10*Mindex).toString()
+            return (VALUE_DEMO[biggistValIndex].y/10*index).toString()
         }
     }
 
-    const returnVerticalMemoryText = (Vindex: number): string => {
-        if(Vindex == 0) {
+    const returnVerticalMemoryText = (index: number): string => {
+        if(index == 0) {
             return '0'
         } else {
-            return  (Math.floor( ( VALUE_DEMO[biggistMemoryIndex].x/10*Vindex ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
+            return  (Math.floor( ( VALUE_DEMO[biggistMemoryIndex].x/10*index ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
         }
     }
 
