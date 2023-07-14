@@ -39,11 +39,7 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     ]);
 
     // 点描画位置に変換
-    let renderPointArr: number[][] = []
-    for (let index = 0; index < childLineData.length; index++) {
-
-        renderPointArr.push([childLineData[index].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80, 390 - childLineData[index].y / childLineData[biggistValIndex].y*390 + 10])
-    }
+    const renderPointArr: number[][] = childLineData.map((item, index) => [item.x / (childLineData[biggistMemoryIndex].x) *710+80, 390 - item.y / childLineData[biggistValIndex].y*390 + 10])
 
     // 横軸の表記を出力
     const returnMemoryText = (index: number): string => {
