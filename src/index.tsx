@@ -14,6 +14,8 @@ interface LineChartProps {
 const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     children?: ReactNode
 }) => {
+
+    // 折れ線グラフにするデータ群
     const childLineData: DataEntry[] = (()=>{
         if (React.isValidElement(children) && children.type === SimpleChartLine) {
             return children?.props.dataEntry as DataEntry[]
@@ -21,18 +23,29 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
             return []
         }
     })()
-    const biggistValIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.y > array[maxIndex].y ? currentIndex : maxIndex, 0)
+
+    // 縦軸の最大値
     const biggistMemoryIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
+    // 横軸の最大値
+    const biggistValIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.y > array[maxIndex].y ? currentIndex : maxIndex, 0)
+
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
-    const renderLineArr: number[] =  childLineData.flatMap(obj => [(obj.x/(childLineData[biggistMemoryIndex].x as number) *710+80), (390 - obj.y/ childLineData[biggistValIndex].y *390 + 10)]);
-    
+
+    // 折れ線の描画位置に変換
+    const renderLineArr: number[] =  childLineData.flatMap(obj => [
+        (obj.x/(childLineData[biggistMemoryIndex].x as number) *710+80), 
+        (390 - obj.y/ childLineData[biggistValIndex].y *390 + 10)
+    ]);
+
+    // 点描画位置に変換
     let renderPointArr: number[][] = []
     for (let index = 0; index < childLineData.length; index++) {
 
         renderPointArr.push([childLineData[index].x as number / (childLineData[biggistMemoryIndex].x as number) *710+80, 390 - childLineData[index].y / childLineData[biggistValIndex].y*390 + 10])
     }
 
+    // 横軸の表記を出力
     const returnMemoryText = (index: number): string => {
         if(index == 0) {
             return '0'
@@ -41,6 +54,7 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         }
     }
 
+    // 縦軸の表記を出力
     const returnVerticalMemoryText = (index: number): string => {
         if(index == 0) {
             return '0'
@@ -48,7 +62,6 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
             return  (Math.floor( ( childLineData[biggistMemoryIndex].x as number /10*index ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
         }
     }
-    console.log(`## ${childLineData.map((item=>`${item.x}/${item.y}`))}`)
 
     return(
         <>
