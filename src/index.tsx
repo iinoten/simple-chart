@@ -24,14 +24,6 @@ const isReactElement = (child: ReactNode): child is ReactElement<SimpleChartLine
 const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     children?: ReactNode
 }) => {
-    
-    //const childPropsArray: DataEntry[][]|null|undefined = Children.map(children, (child: ReactNode) => {
-    //    //if (!isReactElement(child)) return [];
-    //
-    //    const childElement = child as ReactElement<SimpleChartLineChildProps>;
-    //    const childProps = childElement.props.dataEntry;
-    //    return Array.isArray(childProps) ? childProps : [childProps];
-    //  }) as DataEntry[][];
     const childPropsArray: DataEntry[][] = Children.toArray(children).map((child: ReactNode) => {
         if (!isReactElement(child)) return [];
     
@@ -58,7 +50,6 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
           processChild(children as ReactElement<SimpleChartLineChildProps>);
         }
       } else {
-        console.log('jioejrgiopsjgio    ')
         // 複数の子要素の場合
         Children.forEach(children, (child) => {
           if (isValidElement(child)) {
