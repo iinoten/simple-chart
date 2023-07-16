@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, isValidElement, ReactNode,Children  } from 'react';
 import { Circle, Layer, Line, Rect, Stage, Text } from "react-konva";
 import { DataEntry, SimpleChartLineChildProps } from './constant';
 import './styles.css';
@@ -11,14 +11,69 @@ interface LineChartProps {
     children: React.ReactElement<SimpleChartLineChildProps> | React.ReactElement<SimpleChartLineChildProps>[];
 }
 
+const isReactElement = (child: ReactNode): child is ReactElement<SimpleChartLineChildProps> => {
+    return (
+      typeof child === 'object' &&
+      child !== null &&
+      'props' in child &&
+      (child as ReactElement<SimpleChartLineChildProps>).type !== undefined &&
+      (child as ReactElement<SimpleChartLineChildProps>).props !== undefined
+    );
+  };
+
 const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     children?: ReactNode
 }) => {
+    
+    //const childPropsArray: DataEntry[][]|null|undefined = Children.map(children, (child: ReactNode) => {
+    //    //if (!isReactElement(child)) return [];
+    //
+    //    const childElement = child as ReactElement<SimpleChartLineChildProps>;
+    //    const childProps = childElement.props.dataEntry;
+    //    return Array.isArray(childProps) ? childProps : [childProps];
+    //  }) as DataEntry[][];
+    const childPropsArray: DataEntry[][] = Children.toArray(children).map((child: ReactNode) => {
+        if (!isReactElement(child)) return [];
+    
+        const childElement = child as ReactElement<SimpleChartLineChildProps>;
+        const childProps = childElement.props.dataEntry;
+        console.log(`${childProps.map((item) => item.x)} ? ${childProps.map((item) => item.y)} : [childProps]`);
+        return childProps;
+    }) as DataEntry[][];
+    childPropsArray.map((item,index)=>{
+        console.log(`${index}番の内容: ${item.map(l=>`[${l.x}, ${l.y}]`)}`)
+    })
 
+    const processChild = (child: ReactElement<SimpleChartLineChildProps>) => {
+        const { dataEntry } = child.props as SimpleChartLineChildProps;
+        // 子要素へのアクセス
+        //console.log(child.props);
+        // 例: 子要素のプロパティにアクセス
+        //console.log(child.props.dataEntry);
+      };
+    
+      // 単一の子要素の場合
+      if (!Array.isArray(children)) {
+        if (isValidElement(children)) {
+          processChild(children as ReactElement<SimpleChartLineChildProps>);
+        }
+      } else {
+        console.log('jioejrgiopsjgio    ')
+        // 複数の子要素の場合
+        Children.forEach(children, (child) => {
+          if (isValidElement(child)) {
+            processChild(child as ReactElement<SimpleChartLineChildProps>);
+            const tesrt = child.props as SimpleChartLineChildProps;
+            console.log(tesrt.dataEntry);
+          }
+        });
+      }
+    
     // 折れ線グラフにするデータ群
     const childLineData: DataEntry[] = (()=>{
-        if (React.isValidElement(children) && children.type === SimpleChartLine) {
-            return children?.props.dataEntry as DataEntry[]
+        if (React.isValidElement(children) && children.type === SimpleChartLine && !(children===null)) {
+            const hoge = children as ReactElement<SimpleChartLineChildProps>
+            return hoge.props.dataEntry as DataEntry[]
         } else {
             return []
         }
@@ -61,6 +116,8 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
 
     return(
         <>
+        hoge
+        {/*
             <Stage width={900} height={450}>
                 <Layer>
                   <Rect stroke='black' strokeWidth={0.1} width={850} height={450} />
@@ -93,7 +150,7 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
                     })}
                 </Layer>
             </Stage>
-            {children}
+                */}
         </>
     )
 };
