@@ -24,42 +24,15 @@ const isReactElement = (child: ReactNode): child is ReactElement<SimpleChartLine
 const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     children?: ReactNode
 }) => {
+    // 子要素のDataEntryデータを二次元配列に格納
     const childPropsArray: DataEntry[][] = Children.toArray(children).map((child: ReactNode) => {
         if (!isReactElement(child)) return [];
     
         const childElement = child as ReactElement<SimpleChartLineChildProps>;
         const childProps = childElement.props.dataEntry;
-        console.log(`${childProps.map((item) => item.x)} ? ${childProps.map((item) => item.y)} : [childProps]`);
         return childProps;
     }) as DataEntry[][];
-    childPropsArray.map((item,index)=>{
-        console.log(`${index}番の内容: ${item.map(l=>`[${l.x}, ${l.y}]`)}`)
-    })
 
-    const processChild = (child: ReactElement<SimpleChartLineChildProps>) => {
-        const { dataEntry } = child.props as SimpleChartLineChildProps;
-        // 子要素へのアクセス
-        //console.log(child.props);
-        // 例: 子要素のプロパティにアクセス
-        //console.log(child.props.dataEntry);
-      };
-    
-      // 単一の子要素の場合
-      if (!Array.isArray(children)) {
-        if (isValidElement(children)) {
-          processChild(children as ReactElement<SimpleChartLineChildProps>);
-        }
-      } else {
-        // 複数の子要素の場合
-        Children.forEach(children, (child) => {
-          if (isValidElement(child)) {
-            processChild(child as ReactElement<SimpleChartLineChildProps>);
-            const tesrt = child.props as SimpleChartLineChildProps;
-            console.log(tesrt.dataEntry);
-          }
-        });
-      }
-    
     // 折れ線グラフにするデータ群
     const childLineData: DataEntry[] = (()=>{
         if (React.isValidElement(children) && children.type === SimpleChartLine && !(children===null)) {
@@ -70,9 +43,6 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         }
     })()
 
-    // 縦軸の最大値
-    const biggistMemoryIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
-    const array: number[][] = [[0, 1, 2, 3, 4, 5], [4, 5, 6, 7, 74], [4, 5, 6, 7, 78],[4, 5, 777, 10, 78]];
     // 数値による二次元配列の最も大きい数値の添字を返す
     const getMaxTwoArraysIndex = (arr: number[][]): number[] => {
         //各配列内の数字の最も大きい数字の添字
@@ -90,33 +60,36 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         return[
             biggistIndexEachArray,
             biggistIndexValIndex
-            
         ]
     }
-    const hoge = getMaxTwoArraysIndex(array)
-    console.log(`ouT: ${getMaxTwoArraysIndex(array)}`)
+    // DataEntryデータのxの最大値
+    const biggistXValue = Math.max(...childPropsArray.flatMap(innerArr => innerArr.map(obj => obj.x)));
+    // DataEntryデータのyの最大値
+    const biggistYValue = Math.max(...childPropsArray.flatMap(innerArr => innerArr.map(obj => obj.y)));
+    // 縦軸の最大値
+    const biggistMemorylVal = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
+    const array: number[][] = [[0, 1, 2, 3, 4, 5], [4, 5, 6, 7, 74], [4, 5, 6, 7, 78],[4, 5, 777, 10, 78]];
     // 横軸の最大値
     const biggistValIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.y > array[maxIndex].y ? currentIndex : maxIndex, 0)
-    console.log(`横軸の最大値: ${biggistValIndex}`)
 
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
 
     // 折れ線の描画位置に変換
     const renderLineArr: number[] =  childLineData.flatMap(obj => [
-        (obj.x/(childLineData[biggistMemoryIndex].x as number) *710+80), 
-        (390 - obj.y/ childLineData[biggistValIndex].y *390 + 10)
+        (obj.x/(biggistXValue as number) *710+80), 
+        (390 - obj.y/ biggistYValue *390 + 10)
     ]);
 
     // 点描画位置に変換
-    const renderPointArr: number[][] = childLineData.map((item, index) => [item.x / (childLineData[biggistMemoryIndex].x) *710+80, 390 - item.y / childLineData[biggistValIndex].y*390 + 10])
+    const renderPointArr: number[][] = childLineData.map((item, index) => [item.x / (biggistXValue) *710+80, 390 - item.y / biggistYValue*390 + 10])
 
     // 横軸の表記を出力
     const returnMemoryText = (index: number): string => {
         if(index == 0) {
             return '0'
         } else {
-            return (childLineData[biggistValIndex].y/10*index).toString()
+            return (biggistYValue/10*index).toString()
         }
     }
 
@@ -125,14 +98,13 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         if(index == 0) {
             return '0'
         } else {
-            return  (Math.floor( ( childLineData[biggistMemoryIndex].x as number /10*index ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
+            return  (Math.floor( ( biggistXValue as number /10*index ) * Math.pow( 10, 3 ) ) / Math.pow( 10, 3 )).toString()
         }
     }
 
     return(
         <>
         hoge
-        {/*
             <Stage width={900} height={450}>
                 <Layer>
                   <Rect stroke='black' strokeWidth={0.1} width={850} height={450} />
@@ -165,7 +137,6 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
                     })}
                 </Layer>
             </Stage>
-                */}
         </>
     )
 };
