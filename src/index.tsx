@@ -66,11 +66,6 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     const biggistXValue = Math.max(...childPropsArray.flatMap(innerArr => innerArr.map(obj => obj.x)));
     // DataEntryデータのyの最大値
     const biggistYValue = Math.max(...childPropsArray.flatMap(innerArr => innerArr.map(obj => obj.y)));
-    // 縦軸の最大値
-    const biggistMemorylVal = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
-    const array: number[][] = [[0, 1, 2, 3, 4, 5], [4, 5, 6, 7, 74], [4, 5, 6, 7, 78],[4, 5, 777, 10, 78]];
-    // 横軸の最大値
-    const biggistValIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.y > array[maxIndex].y ? currentIndex : maxIndex, 0)
 
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
