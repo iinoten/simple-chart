@@ -72,8 +72,32 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
 
     // 縦軸の最大値
     const biggistMemoryIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.x > array[maxIndex].x ? currentIndex : maxIndex, 0)
+    const array: number[][] = [[0, 1, 2, 3, 4, 5], [4, 5, 6, 7, 74], [4, 5, 6, 7, 78],[4, 5, 777, 10, 78]];
+    // 数値による二次元配列の最も大きい数値の添字を返す
+    const getMaxTwoArraysIndex = (arr: number[][]): number[] => {
+        //各配列内の数字の最も大きい数字の添字
+        const biggistIndexesEachArray: number[] = arr.map(singleNumArray => {
+            return singleNumArray.reduce((maxIndex, num, currentIndex) => num > singleNumArray[maxIndex] ? currentIndex : maxIndex, 0)
+        })
+        //各配列内の数字の最も大きい数字
+        const biggistNumInArrays: number[] = biggistIndexesEachArray.map((bigIndex,index) => (
+            arr[index][bigIndex]
+        ))
+        // 最も大きい数字が入っていた配列の添字
+        const biggistIndexEachArray: number = biggistNumInArrays.reduce((maxIndex, num, currentIndex) => num > biggistNumInArrays[maxIndex] ? currentIndex : maxIndex, 0)
+        // 最も大きい数字が入っていた配列内の最も大きい数字の添字
+        const biggistIndexValIndex: number = arr[biggistIndexEachArray].reduce((maxIndex, num, currentIndex) => num > arr[biggistIndexEachArray][maxIndex] ? currentIndex : maxIndex, 0)
+        return[
+            biggistIndexEachArray,
+            biggistIndexValIndex
+            
+        ]
+    }
+    const hoge = getMaxTwoArraysIndex(array)
+    console.log(`ouT: ${getMaxTwoArraysIndex(array)}`)
     // 横軸の最大値
     const biggistValIndex = childLineData.reduce((maxIndex, obj, currentIndex, array) => obj.y > array[maxIndex].y ? currentIndex : maxIndex, 0)
+    console.log(`横軸の最大値: ${biggistValIndex}`)
 
     // 10,400 始まり   790,10 終わり
     // 780 全体横   390 全体縦
