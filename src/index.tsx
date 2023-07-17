@@ -55,25 +55,6 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         }
     })()
 
-    // 数値による二次元配列の最も大きい数値の添字を返す
-    const getMaxTwoArraysIndex = (arr: number[][]): number[] => {
-        //各配列内の数字の最も大きい数字の添字
-        const biggistIndexesEachArray: number[] = arr.map(singleNumArray => {
-            return singleNumArray.reduce((maxIndex, num, currentIndex) => num > singleNumArray[maxIndex] ? currentIndex : maxIndex, 0)
-        })
-        //各配列内の数字の最も大きい数字
-        const biggistNumInArrays: number[] = biggistIndexesEachArray.map((bigIndex,index) => (
-            arr[index][bigIndex]
-        ))
-        // 最も大きい数字が入っていた配列の添字
-        const biggistIndexEachArray: number = biggistNumInArrays.reduce((maxIndex, num, currentIndex) => num > biggistNumInArrays[maxIndex] ? currentIndex : maxIndex, 0)
-        // 最も大きい数字が入っていた配列内の最も大きい数字の添字
-        const biggistIndexValIndex: number = arr[biggistIndexEachArray].reduce((maxIndex, num, currentIndex) => num > arr[biggistIndexEachArray][maxIndex] ? currentIndex : maxIndex, 0)
-        return[
-            biggistIndexEachArray,
-            biggistIndexValIndex
-        ]
-    }
     // DataEntryデータのxの最大値
     const biggistXValue = Math.max(...childPropsArray.flatMap(innerArr => innerArr.map(obj => obj.x)));
     // DataEntryデータのyの最大値
