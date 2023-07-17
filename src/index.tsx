@@ -84,7 +84,9 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     })
 
     // 点描画位置に変換
-    const renderPointArr: number[][] = childLineData.map((item, index) => [item.x / (biggistXValue) *710+80, 390 - item.y / biggistYValue*390 + 10])
+    const renderPointArr: number[][][]= childPropsArray.map(dataEntry => (
+        dataEntry.map((item, index) => [item.x / (biggistXValue) *710+80, 390 - item.y / biggistYValue*390 + 10])
+    ))
 
     // 横軸の表記を出力
     const returnMemoryText = (index: number): string => {
@@ -136,10 +138,11 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
                             <Line points={lineData}stroke='#696969' strokeWidth={3} />
                         ))
                     }
-                  <Line points={renderLineArr}stroke='#696969' strokeWidth={3} />
-                    {renderPointArr.map((item) => {
+                    {renderPointArr.map((pointArr) => {
                         return (
-                            <Circle fill='white' x={item[0]} y={item[1]} radius={6} stroke='#696969' strokeWidth={3} />   
+                            pointArr.map(item => {
+                                return <Circle fill='white' x={item[0]} y={item[1]} radius={6} stroke='#696969' strokeWidth={3} />  
+                            }) 
                         );
                     })}
                 </Layer>
