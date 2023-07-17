@@ -76,6 +76,13 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         (390 - obj.y/ biggistYValue *390 + 10)
     ]);
 
+    const LinesPositionData = childPropsArray.map(dataEntryArr => {
+        return dataEntryArr.flatMap(obj => [
+            (obj.x/(biggistXValue as number) *710+80),   
+            (390 - obj.y/ biggistYValue *390 + 10)
+        ])
+    })
+
     // 点描画位置に変換
     const renderPointArr: number[][] = childLineData.map((item, index) => [item.x / (biggistXValue) *710+80, 390 - item.y / biggistYValue*390 + 10])
 
@@ -124,6 +131,11 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
                         }
                         return memoryLines
                     })()}
+                    {
+                        LinesPositionData.map(lineData => (
+                            <Line points={lineData}stroke='#696969' strokeWidth={3} />
+                        ))
+                    }
                   <Line points={renderLineArr}stroke='#696969' strokeWidth={3} />
                     {renderPointArr.map((item) => {
                         return (
