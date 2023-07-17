@@ -4,9 +4,6 @@ import { ColorCode, DataEntry, SimpleChartLineChildProps, preColors } from './co
 import './styles.css';
 import {SimpleChartLine} from './SimpleChartLine';
 
-// 開発用に使うデモの値
-const childLineData: DataEntry[] = [{x:0,y:0},{x:0.3,y:80},{x:0.5,y:23},{x:0.7,y:7},{x:2,y:50}]
-
 interface LineChartProps {
     children: React.ReactElement<SimpleChartLineChildProps> | React.ReactElement<SimpleChartLineChildProps>[];
 }
