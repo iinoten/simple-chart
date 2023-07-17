@@ -109,7 +109,6 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
 
     return(
         <>
-        hoge
             <Stage width={900} height={500}>
                 <Layer>
                   <Rect stroke='black' strokeWidth={0.1} width={850} height={500} />
@@ -141,11 +140,13 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
                     }
                     {renderPointArr.map((pointArr,index) => {
                         return (
-                            pointArr.map((item) => {
+                            pointArr.map((item,pointIndex) => {
                                 return (
                                     <ChartPoint
                                         x={item[0]} y={item[1]}
                                         color={lineColorDatas[index]}
+                                        dataX={childPropsArray[index][pointIndex].x}
+                                        dataY={childPropsArray[index][pointIndex].y}
                                     />
                                 )
                             }) 
