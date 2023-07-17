@@ -29,8 +29,18 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         const childProps = childElement.props.dataEntry;
         return childProps;
     }) as DataEntry[][];
-    const colorsArray: ColorCode[] = []
+
+    // グラフのタイトル
+    const lineTitleDatas: string[] = Children.toArray(children).map((child: ReactNode) => {
+        if (!isReactElement(child)) return '';
+        const childElement = child as ReactElement<SimpleChartLineChildProps>;
+        const childProps = childElement.props.title;
+        if(childProps === undefined) return ''
+        return childProps;
+    })
+
     // グラフの色配列
+    const colorsArray: ColorCode[] = []
     const lineColorDatas: ColorCode[] = Children.toArray(children).map((child: ReactNode) => {
         if (!isReactElement(child)) return [];
         const childElement = child as ReactElement<SimpleChartLineChildProps>;
@@ -99,9 +109,9 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
     return(
         <>
         hoge
-            <Stage width={900} height={450}>
+            <Stage width={900} height={500}>
                 <Layer>
-                  <Rect stroke='black' strokeWidth={0.1} width={850} height={450} />
+                  <Rect stroke='black' strokeWidth={0.1} width={850} height={500} />
                     {(() => {
                         const memoryLines: React.JSX.Element[] = []
                         for (let index = 0; index < 10; index++) {
@@ -135,6 +145,11 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
                             }) 
                         );
                     })}
+                    {
+                        lineTitleDatas.map((title,titleIndex) => (
+                            <Text fontStyle='bold' x={50+ (titleIndex*80)} y={465} fontSize={18} fill={lineColorDatas[titleIndex]} text={title} />
+                        ))
+                    }
                 </Layer>
             </Stage>
         </>
