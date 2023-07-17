@@ -3,6 +3,7 @@ import { Circle, Layer, Line, Rect, Stage, Text } from "react-konva";
 import { ColorCode, DataEntry, SimpleChartLineChildProps, preColors } from './constant';
 import './styles.css';
 import {SimpleChartLine} from './SimpleChartLine';
+import ChartPoint from './component/ChartPoint';
 
 interface LineChartProps {
     children: React.ReactElement<SimpleChartLineChildProps> | React.ReactElement<SimpleChartLineChildProps>[];
@@ -141,7 +142,12 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
                     {renderPointArr.map((pointArr,index) => {
                         return (
                             pointArr.map((item) => {
-                                return <Circle fill='white' x={item[0]} y={item[1]} radius={6} stroke={lineColorDatas[index]} strokeWidth={3} />  
+                                return (
+                                    <ChartPoint
+                                        x={item[0]} y={item[1]}
+                                        color={lineColorDatas[index]}
+                                    />
+                                )
                             }) 
                         );
                     })}
