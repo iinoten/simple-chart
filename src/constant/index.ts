@@ -5,4 +5,7 @@ export interface DataEntry {
 
 export interface SimpleChartLineChildProps {
     dataEntry: DataEntry[];
+    color: ColorCode
 }
+
+export type ColorCode = `#${string}`

@@ -4,6 +4,6 @@ import { Line } from 'react-konva'
 
 
 
-export const SimpleChartLine: React.FC<SimpleChartLineChildProps> = ({dataEntry}) => {
+export const SimpleChartLine: React.FC<SimpleChartLineChildProps> = ({dataEntry,color="#2f4f4f"}) => {
     return <></>
 }

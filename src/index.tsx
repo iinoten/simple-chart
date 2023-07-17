@@ -1,6 +1,6 @@
 import React, { ReactElement, isValidElement, ReactNode,Children  } from 'react';
 import { Circle, Layer, Line, Rect, Stage, Text } from "react-konva";
-import { DataEntry, SimpleChartLineChildProps } from './constant';
+import { ColorCode, DataEntry, SimpleChartLineChildProps } from './constant';
 import './styles.css';
 import {SimpleChartLine} from './SimpleChartLine';
 
@@ -32,6 +32,15 @@ const SimpleChart: React.FC<LineChartProps> = ({ children }: {
         const childProps = childElement.props.dataEntry;
         return childProps;
     }) as DataEntry[][];
+    const lineColorDatas: ColorCode[] = Children.toArray(children).map((child: ReactNode) => {
+        if (!isReactElement(child)) return [];
+        
+        const childElement = child as ReactElement<SimpleChartLineChildProps>;
+        const childProps = childElement.props.color;
+        if(childProps === undefined) return '#696969'
+        return childProps;
+    }).filter((color): color is ColorCode => color !== null);
+    console.log(lineColorDatas)
 
     // 折れ線グラフにするデータ群
     const childLineData: DataEntry[] = (()=>{
