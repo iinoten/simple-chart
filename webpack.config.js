@@ -7,7 +7,14 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 });
 module.exports = {
     // 依存関係解決の起点となる資産を指定します。
+    mode: 'development',
     entry: path.join(__dirname, 'examples/src/index.js'),
+    entry: './src/index.tsx',
+    output: {
+      filename: 'index.js',
+      path: path.join(__dirname, 'dist'),
+      libraryTarget: 'commonjs2',
+    },
     // Babelのトランスパイル対象資産を指定します。
     module: {
         rules: [
@@ -30,7 +37,7 @@ module.exports = {
     },
     plugins: [htmlWebpackPlugin],
     resolve: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
     // 開発用Webサーバのポートを指定します。
     devServer: {
