@@ -1,4 +1,6 @@
 node_modules
 dist
+dist/index.js
+example/dist
 src/stories
 .storybook
