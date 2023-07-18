@@ -1,6 +1,6 @@
-import react from 'react'
 import { DataEntry, SimpleChartLineChildProps } from './constant'
 import { Line } from 'react-konva'
+import React from 'react'
 
 
 
